@@ -1,0 +1,100 @@
+/* ================================================================
+   privacy.css
+   Styles for privacy.html — the privacy policy page.
+   Relies on main.css for tokens, reset, nav, and footer.
+   ================================================================ */
+
+/* ── Page Layout ────────────────────────────────────────────── */
+.privacy-page {
+  flex: 1;
+  padding: 100px 24px 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.privacy-content {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ── Page Header ────────────────────────────────────────────── */
+.privacy-content__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--colour-accent);
+  margin-bottom: 12px;
+}
+
+.privacy-content__title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--colour-text-primary);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.privacy-content__meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--colour-border);
+}
+
+/* ── Sections ───────────────────────────────────────────────── */
+.privacy-section {
+  margin-bottom: 40px;
+}
+
+.privacy-section__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--colour-text-secondary);
+  font-family: var(--font-mono);
+  margin-bottom: 12px;
+}
+
+.privacy-section__body {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--colour-text-secondary);
+}
+
+.privacy-section__body p + p {
+  margin-top: 12px;
+}
+
+/* ── Inline highlight (used for key terms) ──────────────────── */
+.privacy-section__body strong {
+  color: var(--colour-text-primary);
+  font-weight: 600;
+}
+
+/* ── Back link ──────────────────────────────────────────────── */
+.privacy-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 48px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--colour-accent);
+  text-decoration: none;
+  transition: opacity var(--t-fast);
+}
+
+.privacy-back:hover { opacity: 0.7; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .privacy-page             { padding-top: 80px; }
+  .privacy-content__title   { font-size: 1.5rem; }
+}

@@ -1,0 +1,200 @@
+/* ================================================================
+   main.css
+   Global design tokens, reset, navigation, logo, footer.
+   Imported by every page in the project.
+   ================================================================ */
+
+/* ── Design Tokens ─────────────────────────────────────────────
+   All colours and timing values are defined here once.
+   Dark mode overrides only what needs to change.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  --colour-bg:             #f5f4f0;
+  --colour-surface:        #ffffff;
+  --colour-border:         #e2e0db;
+  --colour-text-primary:   #111111;
+  --colour-text-secondary: #666666;
+  --colour-text-muted:     #999999;
+  --colour-accent:         #c0392b;
+  --colour-accent-soft:    rgba(192, 57, 43, 0.08);
+  --colour-green:          #1a7a4a;
+  --colour-badge-bg:       #f0faf5;
+  --colour-badge-border:   #1a7a4a;
+  --colour-number:         #111111;
+  --colour-number-idle:    #cccccc;
+  --colour-number-active:  #888888;
+
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+  --font-sans: 'DM Sans', -apple-system, sans-serif;
+
+  --t-fast:   0.15s ease;
+  --t-normal: 0.35s ease;
+  --t-slow:   0.6s ease;
+}
+
+html[data-theme="dark"] {
+  --colour-bg:             #0e0e0e;
+  --colour-surface:        #1a1a1a;
+  --colour-border:         #2a2a2a;
+  --colour-text-primary:   #f0f0f0;
+  --colour-text-secondary: #999999;
+  --colour-text-muted:     #555555;
+  --colour-accent:         #e05a4b;
+  --colour-accent-soft:    rgba(224, 90, 75, 0.1);
+  --colour-green:          #2eb872;
+  --colour-badge-bg:       rgba(46, 184, 114, 0.08);
+  --colour-badge-border:   #2eb872;
+  --colour-number:         #f0f0f0;
+  --colour-number-idle:    #2a2a2a;
+  --colour-number-active:  #555555;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--colour-bg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--colour-text-primary);
+  transition: background var(--t-normal), color var(--t-normal);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Navigation ─────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: var(--colour-bg);
+  transition: background var(--t-normal);
+}
+
+.nav__brand {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--colour-accent);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.nav__controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav__link {
+  font-size: 0.8rem;
+  color: var(--colour-text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color var(--t-fast);
+}
+
+.nav__link:hover { color: var(--colour-text-primary); }
+
+/* ── Theme Toggle ───────────────────────────────────────────── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.theme-toggle__label {
+  font-size: 0.72rem;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  user-select: none;
+}
+
+.theme-toggle__track {
+  width: 38px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--colour-border);
+  position: relative;
+  transition: background var(--t-normal);
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .theme-toggle__track { background: var(--colour-accent); }
+
+.theme-toggle__knob {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition: transform var(--t-normal);
+}
+
+html[data-theme="dark"] .theme-toggle__knob { transform: translateX(18px); }
+
+/* ── Logo ───────────────────────────────────────────────────── */
+.logo {
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo__svg { width: 140px; height: auto; }
+
+/* These two elements inherit the page text colour so they
+   adapt to light/dark mode without any JS involvement. */
+.logo__needle {
+  stroke: var(--colour-text-primary);
+  transition: stroke var(--t-normal);
+}
+
+.logo__dot {
+  fill: var(--colour-text-primary);
+  transition: fill var(--t-normal);
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+  padding: 20px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  transition: color var(--t-normal);
+}
+
+footer strong {
+  color: var(--colour-accent);
+  font-weight: 500;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .nav { padding: 14px 18px; }
+  .logo { margin-bottom: 28px; }
+}

@@ -1,0 +1,308 @@
+/* ================================================================
+   speedtest.css
+   All styles specific to the speed test UI:
+     - Unit selector pill group
+     - Large speed number + aside (unit label + action button)
+     - Progress bar
+     - Status text + stable badge
+     - Results panel (download / upload / latency)
+   ================================================================ */
+
+/* ── Page Layout ────────────────────────────────────────────── */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 40px;
+}
+
+/* ── Progress Bar ───────────────────────────────────────────── */
+
+/* Thin accent line fixed to the very top of the viewport.
+   Width is driven by JS via inline style. */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--colour-accent);
+  width: 0%;
+  transition: width 0.4s ease;
+  z-index: 200;
+}
+
+/* ── Unit Selector ──────────────────────────────────────────── */
+
+/*
+ * A pill-shaped button group that lets the user choose how speed
+ * values are displayed: Mbps / MB/s / GB/s.
+ *
+ * Behaviour controlled by JS:
+ *   .is-locked  — added while a test is running; dims the selector
+ *                 and disables all pointer interaction
+ *   .is-active  — added to the selected pill button
+ */
+.unit-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 32px;
+  padding: 4px;
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-border);
+  border-radius: 30px;
+  transition:
+    background var(--t-normal),
+    border-color var(--t-normal),
+    opacity var(--t-fast);
+}
+
+.unit-selector.is-locked {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.unit-selector__btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 7px 20px;
+  border: none;
+  border-radius: 24px;
+  background: transparent;
+  color: var(--colour-text-muted);
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+  white-space: nowrap;
+}
+
+.unit-selector__btn:hover:not(.is-active) {
+  color: var(--colour-text-primary);
+  background: var(--colour-accent-soft);
+}
+
+.unit-selector__btn:focus-visible {
+  outline: 2px solid var(--colour-accent);
+  outline-offset: 2px;
+}
+
+/* Active pill: accent fill + white text */
+.unit-selector__btn.is-active {
+  background: var(--colour-accent);
+  color: #ffffff;
+  cursor: default;
+}
+
+/* ── Speed Display ──────────────────────────────────────────── */
+.speed-display {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/*
+ * The main speed number.
+ *
+ * JS-controlled state classes:
+ *   (default)   idle — light grey placeholder dash
+ *   .is-active  test running — mid-grey, animating upward
+ *   .is-done    test complete — full-contrast, final value
+ */
+.speed-display__number {
+  font-family: var(--font-mono);
+  font-size: clamp(120px, 20vw, 180px);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--colour-number-idle);
+  transition: color var(--t-slow);
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+  text-align: right;
+}
+
+.speed-display__number.is-active { color: var(--colour-number-active); }
+.speed-display__number.is-done   { color: var(--colour-number); }
+
+/* Right column: unit label stacked above the action button */
+.speed-display__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 16px;
+  gap: 16px;
+}
+
+/* Unit label — mirrors the active unit selector pill */
+.speed-display__unit {
+  font-family: var(--font-mono);
+  font-size: clamp(22px, 3.5vw, 36px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--colour-text-muted);
+  transition: color var(--t-normal);
+}
+
+.speed-display__unit.is-done { color: var(--colour-text-secondary); }
+
+/* ── Action Button ──────────────────────────────────────────── */
+
+/*
+ * Circular button with an accent border.
+ * JS swaps the inner SVG icon between pause and restart states.
+ */
+.action-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2.5px solid var(--colour-accent);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-fast);
+  flex-shrink: 0;
+}
+
+.action-btn:hover      { background: var(--colour-accent-soft); }
+.action-btn:focus-visible {
+  outline: 2px solid var(--colour-accent);
+  outline-offset: 3px;
+}
+.action-btn svg { width: 18px; height: 18px; }
+
+/* ── Status Text ────────────────────────────────────────────── */
+.status {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+}
+
+.status__text {
+  font-size: 0.88rem;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+/* ── Stable Badge ───────────────────────────────────────────── */
+
+/*
+ * Shown once download readings have stabilised (within 15% variance).
+ * JS adds .is-visible to trigger the fade-in transition.
+ */
+.stable-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--colour-badge-border);
+  background: var(--colour-badge-bg);
+  color: var(--colour-green);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(4px) scale(0.92);
+  pointer-events: none;
+  transition: opacity var(--t-normal), transform var(--t-normal);
+}
+
+.stable-badge.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.stable-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--colour-green);
+  flex-shrink: 0;
+}
+
+/* ── Results Panel ──────────────────────────────────────────── */
+
+/*
+ * Three-column panel showing download / upload / latency.
+ * Hidden until the test completes; JS adds .is-visible.
+ * Unit labels inside each column are updated by UnitController.
+ * Latency always shows "ms" — unit selection does not affect it.
+ */
+.results {
+  display: flex;
+  gap: 48px;
+  margin-top: 40px;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity var(--t-slow), transform var(--t-slow);
+}
+
+.results.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.results__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.results__direction {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.1em;
+}
+
+.results__label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.results__value {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--colour-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.results__unit {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--colour-text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Spinner animation (action button icon while loading) ──── */
+@keyframes rotate { to { transform: rotate(360deg); } }
+.is-spinning { animation: rotate 1.2s linear infinite; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .speed-display__number { font-size: 26vw; }
+  .speed-display__unit   { font-size: 6vw; }
+  .results               { gap: 24px; }
+  .unit-selector         { margin-bottom: 24px; }
+  .unit-selector__btn    { padding: 6px 13px; font-size: 0.7rem; }
+}

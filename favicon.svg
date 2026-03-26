@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+
+  <!--
+    Dasrat Favicon — Option B
+    Dark background · Bold D letterform · Red arc sweep · Red origin dot
+    Designed to read clearly at 16×16, 32×32, and 64×64
+  -->
+
+  <!-- Background tile -->
+  <rect width="32" height="32" rx="7" fill="#0d1117"/>
+
+  <!-- Bold D letterform — anchored bottom-left of canvas -->
+  <text
+    x="4"
+    y="27"
+    font-family="Syne, Georgia, serif"
+    font-weight="800"
+    font-size="26"
+    fill="#ffffff"
+  >D</text>
+
+  <!-- Outer red arc — sweeps top-right from the origin dot -->
+  <path
+    d="M 10 8 A 14 14 0 0 1 28 19"
+    stroke="#e63c2f"
+    stroke-width="2.8"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Inner red arc — tighter radius, slightly transparent for depth -->
+  <path
+    d="M 10 8 A 8 8 0 0 1 20 14"
+    stroke="#e63c2f"
+    stroke-width="2"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.65"
+  />
+
+  <!-- Origin dot — anchor point for both arcs -->
+  <circle cx="10" cy="8" r="2.2" fill="#e63c2f"/>
+
+</svg>

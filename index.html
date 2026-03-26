@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Dasrat — Professional WiFi speed test powered by Cloudflare CDN" />
+    <title>Dasrat — WiFi Speed Test</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Stylesheets: main.css first (tokens + reset shared across all pages) -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/speedtest.css" />
+  </head>
+
+  <body>
+    <!-- Top-of-page progress indicator, driven by UIController -->
+    <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" aria-label="Site navigation">
+      <a href="#" class="nav__brand">Dasrat</a>
+      <div class="nav__controls">
+        <a href="privacy.html" class="nav__link">Privacy</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" onclick="ThemeController.toggle()">
+          <span class="theme-toggle__label" id="themeLabel">Light</span>
+          <div class="theme-toggle__track">
+            <div class="theme-toggle__knob"></div>
+          </div>
+        </button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Brand logo -->
+      <div class="logo" aria-label="Dasrat logo">
+        <svg class="logo__svg" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M20 95 A80 80 0 0 1 180 95" stroke="#c0392b" stroke-width="9"  stroke-linecap="round" fill="none"/>
+          <path d="M45 85 A55 55 0 0 1 155 85" stroke="#c0392b" stroke-width="7"  stroke-linecap="round" fill="none"/>
+          <path d="M72 74 A33 33 0 0 1 128 74" stroke="#c0392b" stroke-width="6"  stroke-linecap="round" fill="none"/>
+          <line class="logo__needle" x1="100" y1="95" x2="100" y2="34" stroke-width="3.5" stroke-linecap="round"/>
+          <circle class="logo__dot" cx="100" cy="95" r="4.5"/>
+          <text x="100" y="110" text-anchor="middle" font-family="DM Mono, monospace" font-weight="500" font-size="18" fill="#c0392b" letter-spacing="4">DASRAT</text>
+        </svg>
+      </div>
+
+   
+      <div class="unit-selector" id="unitSelector" role="group" aria-label="Speed unit">
+        <button class="unit-selector__btn is-active" id="unitBtn-mbps" aria-pressed="true"  onclick="UnitController.select('mbps')">Mbps</button>
+        <button class="unit-selector__btn"            id="unitBtn-mbs"  aria-pressed="false" onclick="UnitController.select('mbs')">MB/s</button>
+        <button class="unit-selector__btn"            id="unitBtn-gbs"  aria-pressed="false" onclick="UnitController.select('gbs')">GB/s</button>
+      </div>
+
+      <!-- Speed number + unit label + action button -->
+      <div class="speed-display" role="status" aria-live="polite" aria-atomic="true">
+        <div class="speed-display__number" id="speedNumber">--</div>
+        <div class="speed-display__aside">
+          <div class="speed-display__unit" id="speedUnit">Mbps</div>
+          <button class="action-btn" id="actionBtn" aria-label="Pause test" onclick="UIController.handleAction()">
+            <svg id="actionIcon" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round">
+              <line x1="8"  y1="5" x2="8"  y2="19"/>
+              <line x1="16" y1="5" x2="16" y2="19"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Status text and stabilised badge -->
+      <div class="status">
+        <span class="status__text" id="statusText">Connecting to server</span>
+        <span class="stable-badge" id="stableBadge" aria-live="polite">
+          <span class="stable-badge__dot"></span>
+          Speed Stabilised
+        </span>
+      </div>
+
+      <!-- Results panel: download / upload / latency -->
+      <div class="results" id="resultsPanel" aria-label="Speed test results">
+        <div class="results__item">
+          <span class="results__direction">DL</span>
+          <span class="results__label">Download</span>
+          <span class="results__value" id="resultDown">--</span>
+          <span class="results__unit"  id="resultDownUnit">Mbps</span>
+        </div>
+        <div class="results__item">
+          <span class="results__direction">UL</span>
+          <span class="results__label">Upload</span>
+          <span class="results__value" id="resultUp">--</span>
+          <span class="results__unit"  id="resultUpUnit">Mbps</span>
+        </div>
+        <div class="results__item">
+          <span class="results__direction">RT</span>
+          <span class="results__label">Latency</span>
+          <span class="results__value" id="resultPing">--</span>
+          <span class="results__unit">ms</span>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      Speed test by <strong>DASRAT</strong> &mdash; Powered by Cloudflare CDN
+    </footer>
+
+    <!--
+      Scripts loaded in dependency order.
+      Each file exports one global via IIFE:
+        theme.js     → ThemeController
+        animation.js → AnimationEngine
+        speedtest.js → SpeedTestEngine
+        ui.js        → UnitController + UIController + auto-init
+    -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/speedtest.js"></script>
+    <script src="assets/js/ui.js"></script>
+  </body>
+</html>
